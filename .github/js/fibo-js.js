@@ -1,26 +1,13 @@
-function fibo(num) {
-  
-  if(num <= 1) {
-    return num;
-  }
-  
-  let result = [0, 1];
-
-  for (let i = 2; i <= num; i++) {
-    result[i] = result[i - 2] + result[i - 1];
-  }
-
-  return result[result.length - 1];
-}
-
 let inputPlaceHolder = document.getElementById("fiboInput").value;
 
 let outputPlaceHolder = document.getElementById("fiboOutput");
 
-document.getElementById("myButton").addEventListener('click', function() {
+document.getElementById("myButton").addEventListener("click", function () {
+  tempInput = document.getElementById("fiboInput").value;
 
-  outputPlaceHolder.innerText = fibo(document.getElementById("fiboInput").value
-  )
-}
-)
-
+  fetch(`http://localhost:5050/fibonacci/+${tempInput}`).then((response) => {
+    response.json().then((data) => {
+      outputPlaceHolder.innerText = data.result;
+    });
+  });
+});
