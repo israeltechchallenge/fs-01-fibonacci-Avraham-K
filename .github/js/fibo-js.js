@@ -1,4 +1,5 @@
 function fibo(num) {
+  
   if(num <= 1) {
     return num;
   }
@@ -12,8 +13,14 @@ function fibo(num) {
   return result[result.length - 1];
 }
 
-let inputPlaceHolder = document.getElementById("input");
-let outputPlaceHolder = document.getElementById("output");
+let inputPlaceHolder = document.getElementById("fiboInput").value;
 
-inputPlaceHolder.innerText = 10;
-outputPlaceHolder.innerText = fibo(inputPlaceHolder.innerText);
+let outputPlaceHolder = document.getElementById("fiboOutput");
+
+document.getElementById("myButton").addEventListener('click', function() {
+
+  outputPlaceHolder.innerText = fibo(document.getElementById("fiboInput").value
+  )
+}
+)
+
