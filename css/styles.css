@@ -1,0 +1,35 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.fiboCalcText {
+  font-size: 24px;
+}
+.inputWidth {
+  padding-left: 10px;
+  border-radius: 5px; 
+}
+#numLarger {
+  background-color: #F2DEDE;
+  border: 1px solid #EBCCCC;
+  color: #A94442;
+  margin-left: 4.5rem;
+} 
+#fiboOutput {
+  font-weight: 700;
+  font-size: 24px;
+}
+.redText {  
+  color: red;
+}
+
+.hidden{
+  visibility: hidden;
+}
+
