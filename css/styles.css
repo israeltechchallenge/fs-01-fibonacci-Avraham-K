@@ -19,7 +19,7 @@ input[type=number] {
   background-color: #F2DEDE;
   border: 1px solid #EBCCCC;
   color: #A94442;
-  margin-left: 4.5rem;
+  height: 38px;
 } 
 #fiboOutput {
   font-weight: 700;
@@ -32,4 +32,5 @@ input[type=number] {
 .hidden{
   visibility: hidden;
 }
+
 
