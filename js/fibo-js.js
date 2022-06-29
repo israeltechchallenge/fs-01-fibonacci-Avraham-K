@@ -11,7 +11,6 @@ let checked = document.getElementById("flexCheckDefault");
 function fibo(x) { 
   i = fiboArray.length;
   if (fiboArray.length>x) {
-      console.log(fiboArray[x]);
       return(fiboArray[i-1]);
   }
       fiboArray.push(fiboArray[i-1]+fiboArray[i-2]);
@@ -34,11 +33,26 @@ function compare( a, b ) {
   return 0;
 }
 
-function oldResults() {
+serverError=false;
+async function urlToData(url) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw await response.text();
+      }
+      const data = await response.json();
+      serverError = false;
+      return data;
+    }
+    catch(errorText){ 
+      serverError = true;
+      return errorText;
+    };
+  }
 
-  fetch(`http://localhost:5050/getFibonacciResults`)
-  .then((response) => response.json().then((oldData) => {
-  
+async function oldResults() {
+
+  let oldData = await urlToData(`http://localhost:5050/getFibonacciResults`);
   arrayLong = oldData.results.length - 1;
 
   (oldData.results).sort(compare);
@@ -48,10 +62,8 @@ function oldResults() {
   third_place.innerHTML=`<span>The Fibonacci of</span><span><b> ${oldData.results[arrayLong-2].number}</b></span><span> is</span><span><b> ${oldData.results[arrayLong-2].result}. </b></span><span>Calculated at:</span><span>${new Date(oldData.results[arrayLong-2].createdDate)}</span>`;
 }
 
-))
-}
 
-document.getElementById("myButton").addEventListener("click", function () {
+document.getElementById("myButton").addEventListener("click", async function () {
 
   outputPlaceHolder.innerText = ""; 
   largerPlaceHolder.innerText = "";
@@ -60,7 +72,6 @@ document.getElementById("myButton").addEventListener("click", function () {
   document.getElementById("fiboInput").classList.remove("btn-outline-danger");
   networkError.innerText = "";
   
-
   tempInput = document.getElementById("fiboInput").value;
 
   if (tempInput > 50) {
@@ -79,31 +90,22 @@ document.getElementById("myButton").addEventListener("click", function () {
 
     if(checked.checked){
       document.getElementById("spinnerChecking").classList.remove("d-none");
-      fetch(`http://localhost:5050/fibonacci/+${tempInput}`).then((response) => {
-  
-      if (!response.ok) {
-        response.text().then((errtext) => {
+      serverAnswer = await urlToData(`http://localhost:5050/fibonacci/+${tempInput}`);
+
+      if (serverError) {
         document.getElementById("spinnerChecking").classList.add("d-none");
-        networkError.innerText = `Server Error: ${errtext}`;
-        return;
-        })
-  
+        networkError.innerText = `Server Error: ${serverAnswer}`;
       }else { 
-        response.json().then((data) => {
         document.getElementById("spinnerChecking").classList.add("d-none");
-        outputPlaceHolder.innerText = data.result;
-      });
-    }
-  
-    });
+        outputPlaceHolder.innerText = serverAnswer.result;
+      }
+
     }else{
       document.getElementById("spinnerChecking").classList.add("d-none");
       let demo = fibo(tempInput);
       outputPlaceHolder.innerText = fibo(tempInput);
     }
     
-
   oldResults();
 }
-
 });
